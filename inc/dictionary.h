@@ -1,3 +1,7 @@
+#ifndef INC_DICTIONARY_H
+#define INC_DICTIONARY_H
+
+
 #include <string>
 
 class Dictionary {
@@ -9,3 +13,6 @@ class Dictionary {
             return false;
         }
 };
+
+
+#endif
