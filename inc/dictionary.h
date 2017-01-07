@@ -3,15 +3,21 @@
 
 
 #include <string>
+#include <set>
+
 
 class Dictionary {
     public:
         Dictionary( const std::string & fname ) {
+            mWords.insert("dog");
         }
 
         bool Check( const std::string & word  ) const {
-            return false;
+            return mWords.find(word) != mWords.end();
         }
+
+    private:
+        std::set <std::string> mWords;
 };
 
 
