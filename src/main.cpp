@@ -29,7 +29,7 @@ int main() {
                 cout << word << " is OK\n";
             }
             else {
-                cout << word << " is misspelt \n";
+                cout << word << " is misspelt at line " << p.LineNo() << "\n";
             }
         }
     }

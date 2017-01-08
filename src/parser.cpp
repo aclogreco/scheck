@@ -10,14 +10,43 @@ Parser :: Parser(istream & is) : mIn(is) {
 string Parser :: NextWord() {
     string word;
 
-    if (mIn >> word) {
+    if (mIs>> word) {
         return word;
     }
-    else if (mIn.eof()) {
-        return "";
+    else if (mIs.eof()) {
+        if (ReadLine()) {
+            return NextWord();
+        }
+        else {
+            return "";
+        }
     }
     else {
-        throw ScheckError("read error");
+        throw ScheckError("string stream read error");
+    }
+}
+
+unsigned int Parser :: LineNo() const {
+    return mLineNo;
+}
+
+string Parser :: Context() const {
+    return mLine;
+}
+
+bool Parser :: ReadLine() {
+    if (getline(mIn, mLine)) {
+        mIs.clear();
+        mIs.str(mLine);
+        mLineNo++;
+
+        return true;
+    }
+    else if (mIn.eof()) {
+        return false;
+    }
+    else {
+        throw ScheckError("file read error");
     }
 }
 
