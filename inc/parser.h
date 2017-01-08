@@ -10,6 +10,8 @@ class Parser {
         std::string NextWord();
         unsigned int LineNo() const;
         std::string Context() const;
+    private:
+        std::istream & mIn;
 };
 
 #endif
