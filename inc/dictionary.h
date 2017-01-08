@@ -5,6 +5,7 @@
 #include <string>
 #include <set>
 #include <fstream>
+#include "error.h"
 
 
 class Dictionary {
