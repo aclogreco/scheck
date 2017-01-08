@@ -7,8 +7,11 @@ using namespace std;
 int main() {
     try {
         cout << "scheck version 0.1" << endl;
+
         //Dictionary d("data/mydict.dat");
-        Dictionary d("data/not-there.dat");
+        //Dictionary d("data/not-there.dat");
+        Dictionary d("data/dict.dat");
+
         string word;
         
         while (getline(cin, word)) {
