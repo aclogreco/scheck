@@ -12,7 +12,7 @@ class Parser {
         unsigned int LineNo() const;
         std::string Context() const;
     private:
-        bool Readline();
+        bool ReadLine();
         std::istream & mIn;
         std::string mLine;
         unsigned int mLineNo;

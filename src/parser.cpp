@@ -4,7 +4,8 @@
 using std::istream;
 using std::string;
 
-Parser :: Parser(istream & is) : mIn(is) {
+Parser :: Parser(istream & is) 
+    : mIn(is), mLineNo(0) {
 }
 
 string Parser :: NextWord() {
