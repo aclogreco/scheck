@@ -4,12 +4,18 @@
 
 #include <string>
 #include <set>
+#include <fstream>
 
 
 class Dictionary {
     public:
         Dictionary( const std::string & fname ) {
-            mWords.insert("dog");
+            std::ifstream wlist(fname.c_str());
+            std::string word;
+
+            while (std::getline(wlist, word)) {
+                mWords.insert(word);
+            }
         }
 
         bool Check( const std::string & word  ) const {
