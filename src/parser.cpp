@@ -4,27 +4,54 @@
 using std::istream;
 using std::string;
 
-Parser :: Parser(istream & is) 
-    : mIn(is), mLineNo(0) {
+Parser :: Parser(istream & is) : mIn(is), mLineNo(0), 
+            mPos(0), mState(stInSpace) {
 }
 
 string Parser :: NextWord() {
     string word;
 
-    if (mIs>> word) {
-        return word;
-    }
-    else if (mIs.eof()) {
-        if (ReadLine()) {
-            return NextWord();
+    while (char c = NextChar()) {
+        switch (mState) {
+            case stInSpace:
+                if (std::isalpha(c)) {
+                    word += c;
+                    mState = stInWord;
+                }
+                else if (std::isdigit(c)) {
+                    mState = stInNum;
+                }
+                break;
+
+            case stInWord:
+                if (std::isalpha(c) || c == '\'') {
+                    word += c;
+                }
+                else if (std::isdigit(c)) {
+                    mState = stInNum;
+                }
+                else {
+                    mState = stInSpace;
+                    return word;
+                }
+                break;
+
+            case stInNum:
+                if (std::isalnum(c) || c == '\'') {
+                    word += c;
+                }
+                else {
+                    mState = stInSpace;
+                    word = "";
+                }
+                break;
+
+            default:
+                throw ScheckError("bad state");
         }
-        else {
-            return "";
-        }
     }
-    else {
-        throw ScheckError("string stream read error");
-    }
+
+    return word;
 }
 
 unsigned int Parser :: LineNo() const {
@@ -37,9 +64,9 @@ string Parser :: Context() const {
 
 bool Parser :: ReadLine() {
     if (getline(mIn, mLine)) {
-        mIs.clear();
-        mIs.str(mLine);
+        mPos = 0;
         mLineNo++;
+        mLine += ' ';
 
         return true;
     }
@@ -51,3 +78,12 @@ bool Parser :: ReadLine() {
     }
 }
 
+char Parser :: NextChar() {
+    if (mPos >= mLine.size()) {
+        if (!ReadLine()) {
+            return 0;
+        }
+    }
+    
+    return mLine[mPos++];
+}
