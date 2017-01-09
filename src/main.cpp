@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     try {
-        cout << "scheck version 0.4" << endl;
+        cout << "scheck version 0.6" << endl;
 
         Dictionary d("data/mydict.dat");
         //Dictionary d("data/not-there.dat");

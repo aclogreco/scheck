@@ -1,5 +1,6 @@
-bin/scheck : main.o parser.o dictionary.o
-	g++ bin/main.o bin/parser.o bin/dictionary.o -o bin/scheck
+
+scheck : main.o parser.o dictionary.o
+	g++ bin/dictionary.o bin/parser.o bin/main.o -o bin/scheck
 
 
 dictionary.o : src/dictionary.cpp inc/dictionary.h inc/error.h
