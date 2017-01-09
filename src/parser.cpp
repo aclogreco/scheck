@@ -59,14 +59,14 @@ unsigned int Parser :: LineNo() const {
 }
 
 string Parser :: Context() const {
-    return mLine;
+    return mLine.substr(0, mLine.size() - 1);
 }
 
 bool Parser :: ReadLine() {
     if (getline(mIn, mLine)) {
         mPos = 0;
         mLineNo++;
-        mLine += ' ';
+        mLine += '\r';
 
         return true;
     }
@@ -85,5 +85,17 @@ char Parser :: NextChar() {
         }
     }
     
-    return mLine[mPos++];
+    char c = mLine[mPos++];
+
+    if (c == '-' && mLine[mPos] == '\r') {
+        if (!ReadLine()) {
+            return c;
+        }
+        else {
+            return mLine[mPos++];
+        }
+    }
+
+    return c;
 }
+
