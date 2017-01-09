@@ -3,12 +3,13 @@
 #include "dictionary.h"
 #include "parser.h"
 #include "csvreporter.h"
+#include "xmlreporter.h"
 
 using namespace std;
 
 int main() {
     try {
-        cout << "scheck version 0.6" << endl;
+        cout << "scheck version 0.7" << endl;
 
         Dictionary d("data/mydict.dat");
         //Dictionary d("data/not-there.dat");
@@ -22,16 +23,27 @@ int main() {
         
         
         Parser p(sub);
-        CSVReporter rep(cout);
+
+        Reporter *rep = 0;
+        if (argc == 1) {
+            rep = new CSVReporter(cout);
+        }
+        else {
+            rep = new XMLReporter(cout);
+        }
         
         string word;
-        rep.ReportHeader();
+        rep->ReportHeader();
         while ((word = p.NextWord()) != "") {
             if (!d.Check(word)) {
-                rep.ReportError(word, p.Context(), p.LineNo(), subtext);
+                rep->ReportError(word, p.Context(), p.LineNo(), subtext);
             }
         }
-        rep.ReportFooter();
+        rep->ReportFooter();
+
+        delete rep;
+
+        return 0;
     }
 
     catch (const ScheckError & e) {
