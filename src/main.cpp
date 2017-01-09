@@ -2,6 +2,7 @@
 #include <string>
 #include "dictionary.h"
 #include "parser.h"
+#include "csvreporter.h"
 
 using namespace std;
 
@@ -13,25 +14,24 @@ int main() {
         //Dictionary d("data/not-there.dat");
         //Dictionary d("data/dict.dat");
         
-        ifstream sub("data/sub1.txt");
+        const char* subtext = "data/sub1.txt";
+        ifstream sub(subtext);
         if (!sub.is_open()) {
-            throw ScheckError("cannot open data/sub1.txt");
+            throw ScheckError(string("cannot open ") + subtext);
         }
         
         
         Parser p(sub);
-        
+        CSVReporter rep(cout);
         
         string word;
-        
+        rep.ReportHeader();
         while ((word = p.NextWord()) != "") {
-            if (d.Check(word)) {
-                cout << word << " is OK\n";
-            }
-            else {
-                cout << word << " is misspelt at line " << p.LineNo() << "\n";
+            if (!d.Check(word)) {
+                rep.ReportError(word, p.Context(), p.LineNo(), subtext);
             }
         }
+        rep.ReportFooter();
     }
 
     catch (const ScheckError & e) {
