@@ -10,7 +10,7 @@ XMLReporter :: XMLReporter(std::ostream & os) : Reporter(os) {
 }
 
 void XMLReporter :: ReportHeader() {
-    Out() << "<table>\n";
+    Out() << "<?xml version="1.0"?>\n<table>\n";
 }
 
 void XMLReporter :: ReportError(const string & word,

@@ -29,7 +29,7 @@ void CSVReporter :: ReportError(const string & word,
                                 const string & filename) {
     Out() << ToCSV(word) << ","
           << ToCSV(context) << ","
-          << '"' << line << '"' << ","
+          << ToCSV(std::to_string(line)) << ","
           << ToCSV(filename) << "\n";
 }
 
