@@ -2,12 +2,13 @@
 #include <string>
 #include "dictionary.h"
 #include "parser.h"
+#include "reporter.h"
 #include "csvreporter.h"
 #include "xmlreporter.h"
 
 using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
     try {
         cout << "scheck version 0.7" << endl;
 
@@ -15,7 +16,9 @@ int main() {
         //Dictionary d("data/not-there.dat");
         //Dictionary d("data/dict.dat");
         
-        const char* subtext = "data/sub1.txt";
+        //const char* subtext = "data/sub1.txt";
+        const char* subtext = "data/sub2.txt";
+        
         ifstream sub(subtext);
         if (!sub.is_open()) {
             throw ScheckError(string("cannot open ") + subtext);

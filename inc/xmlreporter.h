@@ -10,7 +10,7 @@ class XMLReporter : public Reporter {
         void ReportError(const std::string & word,
                          const std::string & context,
                          unsigned int line,
-                         const::string & filename);
+                         const std::string & filename);
         void ReportFooter();
 };
 

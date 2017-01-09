@@ -20,7 +20,7 @@ void XMLReporter :: ReportError(const string & word,
     Out() << "  <tr>\n" 
           << "    " << ToXML(word) << "\n"
           << "    " << ToXML(context) << "\n"
-          << "    " << ToXML(string(line)) << "\n"
+          << "    " << ToXML(std::to_string(line)) << "\n"
           << "    " << ToXML(filename) << "\n"
           << "  </tr>\n";
 }
