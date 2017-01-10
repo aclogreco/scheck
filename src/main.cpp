@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <memory>
+
 #include "dictionary.h"
 #include "parser.h"
 #include "reporter.h"
@@ -10,7 +12,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     try {
-        cout << "scheck version 0.7" << endl;
+        cout << "scheck version 0.8" << endl;
 
         Dictionary d("data/mydict.dat");
         //Dictionary d("data/not-there.dat");
@@ -27,12 +29,12 @@ int main(int argc, char *argv[]) {
         
         Parser p(sub);
 
-        Reporter *rep = 0;
+        unique_ptr<Reporter> rep;
         if (argc == 1) {
-            rep = new CSVReporter(cout);
+            rep = unique_ptr<Reporter> (new CSVReporter(cout));
         }
         else {
-            rep = new XMLReporter(cout);
+            rep = unique_ptr<Reporter> (new XMLReporter(cout));
         }
         
         string word;
@@ -44,7 +46,7 @@ int main(int argc, char *argv[]) {
         }
         rep->ReportFooter();
 
-        delete rep;
+        //delete rep;
 
         return 0;
     }
