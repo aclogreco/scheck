@@ -14,11 +14,14 @@ class Parser {
     private:
         char NextChar();
         bool ReadLine();
+
         enum State { stInSpace, stInWord, stInNum };
+
         State mState;
         std::istream & mIn;
         std::string mLine;
-        unsigned int mLineNo, mPos;
+        unsigned int mLineNo;
+        unsigned int mPos;
 };
 
 #endif

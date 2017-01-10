@@ -8,7 +8,7 @@ OBJDIR := obj
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(INCDIR)
-CXXFLAGS := -std=gnu++11 -Wall -Wextra
+CXXFLAGS := -std=gnu++11 -Wall -Wextra -Wno-unused
 
 
 SRCFILES := $(wildcard $(SRCDIR)/*.cpp)
