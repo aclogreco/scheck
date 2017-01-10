@@ -8,25 +8,35 @@ OBJDIR := obj
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(INCDIR)
-CXXFLAGS := -std=c++11 -Wall -Wextra
+CXXFLAGS := -std=gnu++11 -Wall -Wextra
 
 
 SRCFILES := $(wildcard $(SRCDIR)/*.cpp)
-OBJFILES := $(pathsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCFILES))
-DEPFILES := $(pathsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.d,$(SRCFILES))
+OBJFILES := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCFILES))
+DEPFILES := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.d,$(SRCFILES))
 
 
 $(BINDIR)/$(PRODUCT) : $(OBJFILES)
 	$(LINKER) $(CXXFLAGS) $^ -o $@
 
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -C $< -o $@
+clean:
+	rm -f $(OBJDIR)/*.o $(BINDIR)/$(PRODUCT)
+
+depends:
+	rm -f $(OBJDIR)/*.d
+	$(MAKE) $(DEPFILES)
 
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	$(CXX) $(INCDIRS) -MM $< \
-		| sed -e 's%^%$@ %' -e 's% % $(OBJDIR)/%'\ > $@
+	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+
+
+$(OBJDIR)/%.d : $(SRCDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCDIRS) -MM $< \
+		| tr '\\n\\r\\\\' ' ' \
+		| sed -e 's%^%$@ %' -e 's% % $(OBJDIR)/%' \
+		> $@
 
 
 -include $(DEPFILES)
