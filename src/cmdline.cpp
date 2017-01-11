@@ -35,7 +35,16 @@ bool CmdLine::HasOpt (const string &opt) const {
 
 
 bool CmdLine::ExtractOpt (const string &opt) {
-    // TODO implement ExtractOpt method (no option value version)
+    Iter pos = FindOpt(opt);
+
+    if (pos != mArgs.end()) {
+        mArgs.erase(pos, pos + 1);
+
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 
