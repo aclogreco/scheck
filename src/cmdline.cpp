@@ -23,14 +23,7 @@ CmdLine::Iter CmdLine::FindOpt (const string &opt) {
 
 
 bool CmdLine::HasOpt (const string &opt) const {
-    Iter pos = FindOpt(opt);
-
-    if (pos != mArgs.end()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (const_cast<CmdLine*>(this)->FindOpt(opt) != mArgs.end());
 }
 
 
