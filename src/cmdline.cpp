@@ -63,16 +63,26 @@ bool CmdLine::ExtractOpt (const string &opt, string &val) {
 
 
 bool CmdLine::MoreOpts () const {
-    // TODO implement MoreOpts method
+    if (mArgs.empty()) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 
 int CmdLine::Argc () const {
-    // TODO implement Argc method
+    return mArgs.size();
 }
 
 
 string CmdLine::Argv (unsigned int i) const {
-    // TODO implement Argv method
+    if (i < Argc()) {
+        return mArgs[i];
+    }
+    else {
+        throw ScheckError("Command line argument array out of bounds.");
+    }
 }
 

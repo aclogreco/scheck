@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 
+#include "error.h"
 #include "dictionary.h"
 #include "parser.h"
 #include "reporter.h"
