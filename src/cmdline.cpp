@@ -38,7 +38,7 @@ bool CmdLine::ExtractOpt (const string &opt) {
     Iter pos = FindOpt(opt);
 
     if (pos != mArgs.end()) {
-        mArgs.erase(pos, pos + 1);
+        mArgs.erase(pos);
 
         return true;
     }
@@ -63,12 +63,13 @@ bool CmdLine::ExtractOpt (const string &opt, string &val) {
 
 
 bool CmdLine::MoreOpts () const {
-    if (mArgs.empty()) {
-        return false;
+    for (int i = 1; i < Argc(); i++) {
+        if (Argv(i) != "" && Argv(i).at(0) == '-') {
+            return true;
+        }
     }
-    else {
-        return true;
-    }
+
+    return false;
 }
 
 
@@ -78,11 +79,6 @@ int CmdLine::Argc () const {
 
 
 string CmdLine::Argv (unsigned int i) const {
-    if (i < Argc()) {
-        return mArgs[i];
-    }
-    else {
-        throw ScheckError("Command line argument array out of bounds.");
-    }
+    return mArgs.at(i);
 }
 
