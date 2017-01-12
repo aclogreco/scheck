@@ -4,6 +4,7 @@
 
 #include <string>
 #include "cmdline.h"
+#include "error.h"
 
 
 class Settings {
