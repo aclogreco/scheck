@@ -28,7 +28,7 @@ Settings::Settings (CmdLine &c1) : mRepType(rtCSV), mDictName(DEF_DICT) {
 }
 
 
-Report Settings::ReportType () const {
+Settings::Report Settings::ReportType () const {
     return mRepType;
 }
 

@@ -8,46 +8,64 @@
 #include "reporter.h"
 #include "csvreporter.h"
 #include "xmlreporter.h"
+#include "cmdline.h"
+#include "settings.h"
+
 
 using namespace std;
 
+
+Reporter* MakeReporter (Settings::Report rt) {
+    if (rt == Settings::rtCSV) {
+        return new CSVReporter(cout);
+    }
+    else {
+        return new XMLReporter(cout);
+    }
+}
+
+
+void CheckSubmission (const Dictionary &d, istream &sub,
+                      const std::string &subname, Reporter &rep) {
+    Parser p(sub);
+    string word;
+
+    rep.ReportHeader();
+    
+    while ((word = p.NextWord()) != "") {
+        if (!d.Check(word)) {
+            rep.ReportError(word, p.Context(), p.LineNo(), subname);
+        }
+    }
+
+    rep.ReportFooter();
+}
+
+
+
 int main(int argc, char *argv[]) {
     try {
-        cout << "scheck version 0.8" << endl;
+        cout << "scheck version 0.9" << endl;
+        
+        CmdLine c1(argc, argv);
+        Settings s(c1);
+        Dictionary d(s.DictName());
+        unique_ptr<Reporter> rep(MakeReporter(s.ReportType()));
 
-        Dictionary d("data/mydict.dat");
-        //Dictionary d("data/not-there.dat");
-        //Dictionary d("data/dict.dat");
-        
-        //const char* subtext = "data/sub1.txt";
-        const char* subtext = "data/sub2.txt";
-        
-        ifstream sub(subtext);
-        if (!sub.is_open()) {
-            throw ScheckError(string("cannot open ") + subtext);
-        }
-        
-        
-        Parser p(sub);
-
-        unique_ptr<Reporter> rep;
-        if (argc == 1) {
-            rep = unique_ptr<Reporter> (new CSVReporter(cout));
+        if (c1.Argc() == 1) {
+            CheckSubmission(d, cin, "stdin", *rep);
         }
         else {
-            rep = unique_ptr<Reporter> (new XMLReporter(cout));
-        }
-        
-        string word;
-        rep->ReportHeader();
-        while ((word = p.NextWord()) != "") {
-            if (!d.Check(word)) {
-                rep->ReportError(word, p.Context(), p.LineNo(), subtext);
+            for (int i = 1; i < c1.Argc(); i++) {
+                ifstream sub(c1.Argv(i).c_str());
+
+                if (!sub.is_open()) {
+                    throw ScheckError("Can not open file " + c1.Argv(i));
+                }
+
+                CheckSubmission(d, sub, c1.Argv(i), *rep);
             }
         }
-        rep->ReportFooter();
-
-        //delete rep;
 
         return 0;
     }
@@ -64,3 +82,4 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 }
+
