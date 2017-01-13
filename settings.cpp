@@ -28,4 +28,12 @@ Settings::Settings (CmdLine &c1) : mRepType(rtCSV), mDictName(DEF_DICT) {
 }
 
 
+Report Settings::ReportType () const {
+    return mRepType;
+}
+
+
+std::string Settings::DictName () const {
+    return mDictName;
+}
 
